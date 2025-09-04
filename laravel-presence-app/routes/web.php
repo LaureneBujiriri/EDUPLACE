@@ -12,4 +12,9 @@ Route::view('profile', 'profile')
     ->middleware(['auth'])
     ->name('profile');
 
+
+use App\Http\Controllers\PresenceController;
+
+Route::post('/presence', [PresenceController::class, 'store'])->middleware(['auth', 'verified'])->name('presence.store');
+
 require __DIR__.'/auth.php';
