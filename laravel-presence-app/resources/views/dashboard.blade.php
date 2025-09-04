@@ -10,17 +10,22 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
                     {{ __("You're logged in!") }}
+                    @if(session('success'))
+                        <div class="mb-4 p-4 bg-green-100 text-green-800 rounded-lg shadow text-center">
+                            {{ session('success') }}
+                        </div>
+                    @endif
                     <div class="mt-8">
                         <h3 class="text-lg font-bold mb-4 text-blue-700">Prendre la présence</h3>
                         <form method="POST" action="{{ route('presence.store') }}" class="space-y-4">
                             @csrf
                             <div>
-                                <label for="nom" class="block text-gray-700">Nom</label>
-                                <input type="text" name="nom" id="nom" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400" required>
-                            </div>
-                            <div>
-                                <label for="prenom" class="block text-gray-700">Prénom</label>
-                                <input type="text" name="prenom" id="prenom" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400" required>
+                                <label for="employe" class="block text-gray-700">Employé</label>
+                                <select name="employe" id="employe" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400" required>
+                                    @foreach(App\Models\User::all() as $user)
+                                        <option value="{{ $user->id }}">{{ $user->name }} ({{ $user->email }})</option>
+                                    @endforeach
+                                </select>
                             </div>
                             <div>
                                 <label for="date" class="block text-gray-700">Date</label>

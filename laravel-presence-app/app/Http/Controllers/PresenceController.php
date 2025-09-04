@@ -11,16 +11,20 @@ class PresenceController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nom' => 'required|string|max:255',
-            'prenom' => 'required|string|max:255',
+            'employe' => 'required|exists:users,id',
             'date' => 'required|date',
             'statut' => 'required|in:present,absent',
         ]);
 
+        $user = \App\Models\User::find($request->employe);
+        if (!$user) {
+            return redirect()->back()->with('error', "L'employé sélectionné n'existe pas.");
+        }
+
         Presence::create([
-            'user_id' => Auth::id(),
-            'nom' => $request->nom,
-            'prenom' => $request->prenom,
+            'user_id' => $user->id,
+            'nom' => $user->name,
+            'prenom' => $user->prenom ?? '',
             'date' => $request->date,
             'statut' => $request->statut,
         ]);
